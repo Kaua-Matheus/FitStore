@@ -5,7 +5,8 @@ import Header from './assets/components/Header'
 function App() {
 
   return (
-    <>
+    <div className="space-y-2">
+
       {/* Utilização do header pré definido */}
       <Header/>
     
@@ -14,7 +15,8 @@ function App() {
           Olá
         </main>
       </div>
-    </>
+
+    </div>
   )
 }
 
