@@ -9,8 +9,10 @@ function App() {
       {/* Utilização do header pré definido */}
       <Header/>
     
-      <div className='bg-gray-500 p-10'>
-        Olá
+      <div className="bg-custom-background">
+        <main>
+          Olá
+        </main>
       </div>
     </>
   )
