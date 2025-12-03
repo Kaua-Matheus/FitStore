@@ -8,14 +8,17 @@ module.exports = {
     extend: {
       colors: {
         'custom-background': '#dfdfdfff',
-        'custom-primary': '#4C92FC',
-        'custom-secondary': '#4C5BFC',
-        'custom-tertiary': '#764CFC',
 
-        'custom-extra-light': '#A3C8FF',
-        'custom-extra-dark': '#7E9AC4',
+        'custom-primary': '#E5007F',
+        'custom-secondary': '#BB1F75',
+        'custom-tertiary': '#66334F',
 
-        'custom-text': '#1f2937',
+        'custom-extra-light': '#FFD7F2',
+        'custom-extra-dark': '#332B2F',
+
+        'custom-light': '#EDEEFF',
+        'custom-gray': '#A6A7B3',
+        'custom-dark': '#868791',
       }
     },
   },
