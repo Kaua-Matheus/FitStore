@@ -1,22 +1,25 @@
 import './App.css'
 
 import Header from './assets/components/Header'
+import Carousel from './assets/components/Carousel'
 
 function App() {
 
   return (
-    <div className="space-y-2">
+    <body className="bg-custom-background">
 
-      {/* Utilização do header pré definido */}
-      <Header/>
-    
-      <div className="bg-custom-background">
-        <main>
-          Olá
-        </main>
+      <div className='items-center space-y-2'>
+        <Header/>
+
+        <Carousel/>
+
+        <div>
+          <p>Ganhe um desconto usando o cupom "SMART"</p>
+        </div>
+        
       </div>
 
-    </div>
+    </body>
   )
 }
 
