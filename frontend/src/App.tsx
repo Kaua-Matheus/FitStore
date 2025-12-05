@@ -8,9 +8,10 @@ import Carousel from './assets/components/Carousel'
 import Product from './assets/components/Product'
 
 
-// Definição de interface
+// Devemos colocar as definições de interface em outro arquivo separado
 type ProductData = {
   product_name: string
+  product_price: number
 }
 
 function App() {
@@ -61,14 +62,17 @@ function App() {
         </div>
 
         <div>
-          Produtos aqui
-          {/* Passamos o Product dentro de um () pois componentes react devem ser introduzidos assim */}
+          <h1>Produtos</h1>
+
+          <div className='flex space-x-2'>
+            {/* Passamos o Product dentro de um () pois componentes react devem ser introduzidos assim */}
 
             {
               products.map((prod, index) => (
-                <Product key={index} Name={prod.product_name}></Product>
+                <Product key={index} Name={prod.product_name} Price={prod.product_price}></Product>
               ))
             }
+          </div>
 
         </div>
 
