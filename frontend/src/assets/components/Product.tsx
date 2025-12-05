@@ -7,7 +7,7 @@ interface ProductProps {
 export default function Product({Name}: ProductProps) {
 
     return (
-        <div>
+        <div className="bg-gray-500 p-3">
             {`${Name}`}
         </div>
     )

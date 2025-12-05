@@ -16,7 +16,7 @@ func Run() {
 	// Criação do router
 	router := gin.Default();
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000"},
+		AllowOrigins:     []string{"http://localhost:5173"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
 		AllowCredentials: true,
@@ -56,7 +56,6 @@ func getAllData(router *gin.Engine, db *gorm.DB) {
 		}
 
 		c.JSON(http.StatusOK, gin.H{
-			"message": "Ok",
 			"data": alldata,
 		})
 	})
