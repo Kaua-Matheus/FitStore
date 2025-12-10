@@ -35,8 +35,6 @@ func Run() {
 	Debug(router);
 	Product(router, db);
 
-	getAllImage(router, db);
-
 	// Files
 	setupFileRoutes(router);
 
@@ -58,14 +56,67 @@ func Debug(router *gin.Engine) {
 func Product(router *gin.Engine, db *gorm.DB) {
 	
 	// GET
-	router.GET("/products", func(ctx *gin.Context) {
+	router.GET("/product", func(ctx *gin.Context) {
 
-		alldata, err := database.GetAllProduct(db); if err != nil {
+		products, err := database.GetAllProduct(db); if err != nil {
 			fmt.Printf("An error occours trying to get the data: %s\n", err);
 		}
 
+
+		// for _, product := range products {
+
+		// }
+
+		// image, err := database.GetImage(db, products.IdImage); if err != nil {
+		// 	fmt.Printf("An error occours trying to get the image: %s\n", err);
+		// 	return;
+		// }
+
+		// file := filepath.Join(image.FilePath, image.FileName + image.ContentType);
+
+		// if _, err := os.Stat(file); os.IsNotExist(err) {
+		// 	ctx.JSON(http.StatusNotFound, gin.H{
+		// 		"error": "File not found",
+		// 	})
+		// 	return;
+		// }
+
 		ctx.JSON(http.StatusOK, gin.H{
-			"data": alldata,
+			"data": products,
+		})
+	})
+
+	router.GET("/product/:id", func(ctx *gin.Context) {
+
+		id := ctx.Param("id");
+
+		product, err := database.GetProduct(db, uuid.MustParse(id)); if err != nil {
+			fmt.Printf("An error occours trying to get the data: %s\n", err);
+			return;
+		}
+
+		image, err := database.GetImage(db, product.IdImage); if err != nil {
+			fmt.Printf("An error occours trying to get the image: %s\n", err);
+			return;
+		}
+
+		// 						("..uploads/Produto", "perfil" ".png");
+		file := filepath.Join(image.FilePath, image.FileName + image.ContentType);
+
+		if _, err := os.Stat(file); os.IsNotExist(err) {
+			ctx.JSON(http.StatusNotFound, gin.H{
+				"error": "Image file not found",
+			})
+			return;
+		}
+
+		ctx.JSON(http.StatusOK, gin.H{
+			"data": product,
+			"image": gin.H{
+				"content_type": image.ContentType,
+				"file_name": image.FileName,
+				"url": fmt.Sprintf("http://localhost:8080/files/%s", "Perfil/perfil.png"),
+			},
 		})
 	})
 
@@ -115,6 +166,9 @@ func setupFileRoutes(router *gin.Engine) {
 	// GET
 	router.GET("/files", func(ctx *gin.Context) {
 		uploadsPath := filepath.Join("..", "uploads");
+		// Podemos alterar as entradas dos dados, para retornar um map com cada path
+		// uploadsPath := filepath.Join(allData[0]["file_path"]);
+
 
 		files, err := os.ReadDir(uploadsPath); if err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{
@@ -139,32 +193,19 @@ func setupFileRoutes(router *gin.Engine) {
 		})
 	})
 
-	router.GET("/files/:filename", func (ctx *gin.Context)  {
+	router.GET("/files/:categoria/:filename", func (ctx *gin.Context)  {
+		categoria := ctx.Param("categoria");
 		filename := ctx.Param("filename");
 
-		filePath := filepath.Join("..", "uploads", filename);
+		filePath := filepath.Join("..", "uploads", categoria, filename);
 
 		if _, err := os.Stat(filePath); os.IsNotExist(err) {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"error": "File not found",
+			ctx.JSON(http.StatusNotFound, gin.H{
+				"error": fmt.Sprintf("File not found: %s", filePath),
 			})
 			return;
 		}
 
 		ctx.File(filePath)
-	})
-}
-
-// Funções de Imagem
-func getAllImage(router *gin.Engine, db *gorm.DB) {
-	router.GET("/images", func(ctx *gin.Context) {
-
-		alldata, err := database.GetAllImage(db); if err != nil {
-			fmt.Printf("An error occours trying to get the data: %s\n", err);
-		}
-
-		ctx.JSON(http.StatusOK, gin.H{
-			"data": alldata,
-		})
 	})
 }

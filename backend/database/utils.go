@@ -16,6 +16,18 @@ func GetAllProduct(db *gorm.DB) ([]Product, error) {
 
 }
 
+func GetProduct(db *gorm.DB, id uuid.UUID) (Product, error) {
+
+	product := Product{};
+	result := db.Where("id = ?", id).Find(&product);
+	if result.Error != nil {
+		return product, fmt.Errorf("%s", result.Error);
+	}
+
+	return product, nil;
+
+}
+
 func AddProduct(db *gorm.DB, product Product) (error) {
 	
 	result := db.Create(&product); if result.Error != nil {
@@ -36,10 +48,13 @@ func UpdateProduct(db *gorm.DB, id uuid.UUID, product Product) (error) {
 	return nil;
 }
 
-func GetAllImage(db *gorm.DB) ([]ProductImage, error) {
+func GetImage(db *gorm.DB, id uuid.UUID) (ProductImage, error) {
 
-	allImages := []ProductImage{};
-	result := db.Find(&allImages);
+	image := ProductImage{};
+	result := db.Where("id_image = ?", id).Find(&image);
+	if result.Error != nil {
+		return image, fmt.Errorf("%s", result.Error);
+	}
 
-	return allImages, result.Error;
+	return image, nil;
 }
