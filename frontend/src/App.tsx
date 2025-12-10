@@ -105,10 +105,8 @@ function App() {
 
         <br />
         <div>
-          Imagem Teste
           
-          {/* <img src="Dark.png" alt="Imagem Dark" /> */}
-          <img src="src/perfil.png" alt="Imagem Perfil" />
+          <img src={`http://localhost:8080/files/perfil.png`} alt="Imagem Perfil" />
         </div>
 
       </div>

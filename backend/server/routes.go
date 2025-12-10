@@ -32,10 +32,9 @@ func Run() {
 		fmt.Println("Conectado.");
 	}
 
-	testApi(router);
-	getAllProducts(router, db);
-	addProduct(router, db);
-	updateProduct(router, db);
+	Debug(router);
+	Product(router, db);
+
 	getAllImage(router, db);
 
 	// Files
@@ -45,99 +44,126 @@ func Run() {
 }
 
 
-// Funções de Produto
-func testApi(router *gin.Engine) {
-	router.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
+// Funções Debug
+func Debug(router *gin.Engine) {
+
+	router.GET("/", func(ctx *gin.Context) {
+		ctx.JSON(http.StatusOK, gin.H{
 			"message": "Api funcionando",
 		})
 	})
 }
 
-func getAllProducts(router *gin.Engine, db *gorm.DB) {
-	router.GET("/products", func(c *gin.Context) {
+// Funções de Produto
+func Product(router *gin.Engine, db *gorm.DB) {
+	
+	// GET
+	router.GET("/products", func(ctx *gin.Context) {
 
 		alldata, err := database.GetAllProduct(db); if err != nil {
 			fmt.Printf("An error occours trying to get the data: %s\n", err);
 		}
 
-		c.JSON(http.StatusOK, gin.H{
+		ctx.JSON(http.StatusOK, gin.H{
 			"data": alldata,
 		})
 	})
-}
 
-func addProduct(router *gin.Engine, db *gorm.DB) {
-	
-	router.POST("/product", func(c *gin.Context) {
+	// POST
+	router.POST("/product", func(ctx *gin.Context) {
 
 		product := database.Product{};
 
-		if err := c.BindJSON(&product); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
+		if err := ctx.BindJSON(&product); err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{
 				"message": "error trying to add data",
 			})
 		}
 
 		database.AddProduct(db, product);
 
-		c.JSON(http.StatusOK, gin.H{
+		ctx.JSON(http.StatusOK, gin.H{
 			"message": "Produto adicionado com sucesso",
 		})
 	})
-}
 
-func updateProduct(router *gin.Engine, db *gorm.DB) {
-
-
-
-	router.PUT("/product/:id", func(c *gin.Context) {
+	// PUT
+	router.PUT("/product/:id", func(ctx *gin.Context) {
 
 		product := database.Product{};
 
-		str_id := c.Param("id");
+		str_id := ctx.Param("id");
 
-		if err := c.BindJSON(&product); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
+		if err := ctx.BindJSON(&product); err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{
 				"message": "error trying to add data",
 			})
 		}
 
 		database.UpdateProduct(db, uuid.MustParse(str_id), product);
 
-		c.JSON(http.StatusOK, gin.H{
+		ctx.JSON(http.StatusOK, gin.H{
 			"message": "Produto adicionado com sucesso",
 		})
 	})
+
 }
 
 // Funções de Arquivo
 func setupFileRoutes(router *gin.Engine) {
-	router.GET("/files/:filename", func (c *gin.Context)  {
-		filename := c.Param("filename");
+
+	// GET
+	router.GET("/files", func(ctx *gin.Context) {
+		uploadsPath := filepath.Join("..", "uploads");
+
+		files, err := os.ReadDir(uploadsPath); if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"error": "Failed to read the uploads path",
+			})
+			return;
+		}
+
+		var fileList []map[string]string;
+
+		for _, file := range files {
+			if !file.IsDir() {
+				fileInfo := map[string]string{
+					"filename": file.Name(),
+					"url": 		fmt.Sprintf("http://localhost:8080/files/%s", file.Name()),
+				}
+				fileList = append(fileList, fileInfo);
+			}
+		}
+		ctx.JSON(http.StatusOK, gin.H{
+			"files": fileList,
+		})
+	})
+
+	router.GET("/files/:filename", func (ctx *gin.Context)  {
+		filename := ctx.Param("filename");
 
 		filePath := filepath.Join("..", "uploads", filename);
 
 		if _, err := os.Stat(filePath); os.IsNotExist(err) {
-			c.JSON(http.StatusBadRequest, gin.H{
+			ctx.JSON(http.StatusBadRequest, gin.H{
 				"error": "File not found",
 			})
 			return;
 		}
 
-		c.File(filePath)
+		ctx.File(filePath)
 	})
 }
 
 // Funções de Imagem
 func getAllImage(router *gin.Engine, db *gorm.DB) {
-	router.GET("/images", func(c *gin.Context) {
+	router.GET("/images", func(ctx *gin.Context) {
 
 		alldata, err := database.GetAllImage(db); if err != nil {
 			fmt.Printf("An error occours trying to get the data: %s\n", err);
 		}
 
-		c.JSON(http.StatusOK, gin.H{
+		ctx.JSON(http.StatusOK, gin.H{
 			"data": alldata,
 		})
 	})

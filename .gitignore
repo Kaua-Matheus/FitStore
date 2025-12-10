@@ -1,0 +1,10 @@
+uploads/
+/uploads/*
+
+.vscode/
+.idea/
+*.swp
+*.swo
+
+*.db
+*.sqlite
