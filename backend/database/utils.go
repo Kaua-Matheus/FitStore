@@ -58,3 +58,12 @@ func GetImage(db *gorm.DB, id uuid.UUID) (ProductImage, error) {
 
 	return image, nil;
 }
+
+func AddProductImage(db *gorm.DB, image ProductImage) (error) {
+
+	result := db.Create(&image); if result.Error != nil {
+		return fmt.Errorf("error trying to add the image %s", result.Error);
+	} else {
+		return nil;
+	}
+}

@@ -34,6 +34,7 @@ func Run() {
 
 	Debug(router);
 	Product(router, db);
+	ProductImage(router, db);
 
 	// Files
 	setupFileRoutes(router);
@@ -62,27 +63,22 @@ func Product(router *gin.Engine, db *gorm.DB) {
 			fmt.Printf("An error occours trying to get the data: %s\n", err);
 		}
 
+		var resultList []map[string]any;
 
-		// for _, product := range products {
-
-		// }
-
-		// image, err := database.GetImage(db, products.IdImage); if err != nil {
-		// 	fmt.Printf("An error occours trying to get the image: %s\n", err);
-		// 	return;
-		// }
-
-		// file := filepath.Join(image.FilePath, image.FileName + image.ContentType);
-
-		// if _, err := os.Stat(file); os.IsNotExist(err) {
-		// 	ctx.JSON(http.StatusNotFound, gin.H{
-		// 		"error": "File not found",
-		// 	})
-		// 	return;
-		// }
+		for _, product := range products {
+			image, err := database.GetImage(db, product.IdImage); if err != nil {
+			fmt.Printf("An error occours trying to get the image: %s\n", err);
+			return;
+		} else {
+			resultList = append(resultList, map[string]any{
+				"product": product,
+				"url_image": fmt.Sprintf("http://localhost:8080/files/%s/%s%s", image.FilePath, image.FileName, image.ContentType),
+			})
+		}
+		}
 
 		ctx.JSON(http.StatusOK, gin.H{
-			"data": products,
+			"data": resultList,
 		})
 	})
 
@@ -100,22 +96,11 @@ func Product(router *gin.Engine, db *gorm.DB) {
 			return;
 		}
 
-		// 						("..uploads/Produto", "perfil" ".png");
-		file := filepath.Join(image.FilePath, image.FileName + image.ContentType);
-
-		if _, err := os.Stat(file); os.IsNotExist(err) {
-			ctx.JSON(http.StatusNotFound, gin.H{
-				"error": "Image file not found",
-			})
-			return;
-		}
-
 		ctx.JSON(http.StatusOK, gin.H{
 			"data": product,
 			"image": gin.H{
-				"content_type": image.ContentType,
-				"file_name": image.FileName,
-				"url": fmt.Sprintf("http://localhost:8080/files/%s", "Perfil/perfil.png"),
+				"file_name": image.FileName + image.ContentType,
+				"url": fmt.Sprintf("http://localhost:8080/files/%s/%s%s", image.FilePath, image.FileName, image.ContentType),
 			},
 		})
 	})
@@ -160,34 +145,70 @@ func Product(router *gin.Engine, db *gorm.DB) {
 
 }
 
+func ProductImage(router *gin.Engine, db *gorm.DB) {
+
+	router.GET("/image/:id", func(ctx *gin.Context) {
+
+		id := ctx.Param("id");
+		image, err := database.GetImage(db, uuid.MustParse(id)); if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"error": "Erro ao tentar adquirir a imagem",
+			})
+			return;
+		}
+
+		ctx.JSON(http.StatusOK, gin.H{
+			"data": image,
+		})
+
+	})
+
+	router.POST("/image", func(ctx *gin.Context) {
+		image := database.ProductImage{};
+
+		if err := ctx.BindJSON(&image); err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"message": "Erro ao tentar adicionar a imagem",
+			});
+			return;
+		}
+
+		database.AddProductImage(db, image);
+
+		ctx.JSON(http.StatusOK, gin.H{
+			"message": "Imagem adicionada com sucesso",
+		})
+
+	})
+}
+
 // Funções de Arquivo
 func setupFileRoutes(router *gin.Engine) {
 
 	// GET
-	router.GET("/files", func(ctx *gin.Context) {
-		uploadsPath := filepath.Join("..", "uploads");
-		// Podemos alterar as entradas dos dados, para retornar um map com cada path
-		// uploadsPath := filepath.Join(allData[0]["file_path"]);
+	// Adquire todas as imagens de dentro da pasta Produtos
+	router.GET("/productfiles", func(ctx *gin.Context) {
+		path := filepath.Join("..", "uploads", "Produtos");
 
-
-		files, err := os.ReadDir(uploadsPath); if err != nil {
+		files, err := os.ReadDir(path); if err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{
-				"error": "Failed to read the uploads path",
+				"error": "Error trying to read the Produtos path",
 			})
 			return;
 		}
 
 		var fileList []map[string]string;
-
-		for _, file := range files {
+		
+		for _, file := range(files) {
 			if !file.IsDir() {
 				fileInfo := map[string]string{
 					"filename": file.Name(),
-					"url": 		fmt.Sprintf("http://localhost:8080/files/%s", file.Name()),
+					"url": 		fmt.Sprintf("http://localhost:8080/files/Produtos/%s", file.Name()),
 				}
 				fileList = append(fileList, fileInfo);
 			}
 		}
+
 		ctx.JSON(http.StatusOK, gin.H{
 			"files": fileList,
 		})
