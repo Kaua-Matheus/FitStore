@@ -218,7 +218,7 @@ func setupFileRoutes(router *gin.Engine) {
 		}
 
 		ctx.JSON(http.StatusOK, gin.H{
-			"files": fileList,
+			"data": fileList,
 		})
 	})
 

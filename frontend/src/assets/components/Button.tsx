@@ -17,6 +17,9 @@ export default function Button({
 
         // Aumentar o tamanho dos textos
         <button className={`
+            h-8 w-12 text-sm
+            md:h-[4vh] md:w-[6vw] md:text-md
+        
             text-custom-extra-dark hover:text-custom-extra-dark
             bg-custom-extra-light hover:bg-custom-primary
             active:bg-custom-secondary transition-colors duration-400

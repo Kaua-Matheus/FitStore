@@ -20,10 +20,12 @@ export default function Carousel() {
         const fetchAll = async () => {
 
             try {
+                // Arrumar, não está retornando as imagens
             const response = await fetch("http://localhost:8080/Banners");
             const data_image = await response.json();
 
-            setImages(data_image.files);
+
+            setImages(data_image.data);
 
             } catch(err) {
                 console.log(`Erro: ${err}`);
@@ -34,6 +36,14 @@ export default function Carousel() {
 
     }, [])
 
+    if (images.length === 0) {
+        return (
+            <div>
+                Carregando...
+            </div>
+        )
+    }
+
     return (
         <div className="flex items-center space-x-4">
             <Button onClick={prev}>
@@ -41,7 +51,10 @@ export default function Carousel() {
             </Button>
 
             {/* Adicionar descrição de imagens, podemos colocar isso em uma requisição http */}
-            <img src={`${images[index]}`} alt="imagem" />
+            <div className="flex 
+                md:h-[24vh] md:h-[40vh]">
+                <img className="rounded-sm md:rounded-md lg:rounded-lg" src={`${images[index].url == undefined ? "" : images[index].url}`} alt={`${images[index].filename}`} />
+            </div>
 
             <Button onClick={next}>
                 Prox
