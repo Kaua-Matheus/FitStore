@@ -10,43 +10,29 @@ import Product from './assets/components/Product'
 
 // Devemos colocar as definições de interface em outro arquivo separado
 type ProductData = {
-  product_name: string
-  product_price: number
-}
-
-type ImageData = {
-  content_type: string
-  file_data: string
+  product: {
+    "id": string,
+    "product_name": string,
+    "product_price": number,
+    "product_description": string,
+  }
+  url_image: string
 }
 
 function App() {
 
   const [products, setProducts] = useState<ProductData[]>([])
-  const [images, setImages] = useState<ImageData[]>([])
-  // var [data, setData] = useState({})
 
   useEffect(() => {
 
-    // Teste de API
-    // fetch("http://localhost:8080/")
-    //   .then(res => res.json())
-    //   .then(data => setData(data))
-    //   .catch(err => console.error(err));
-
-    // console.log(`Esses são os dados: ${data}`);
     const fetchAll = async () => {
 
       try {
         // Response Product
-        const response_product = await fetch("http://localhost:8080/products");
+        const response_product = await fetch("http://localhost:8080/product");
         const data_product = await response_product.json();
 
         setProducts(data_product.data);
-
-        const response_image = await fetch("http://localhost:8080/images");
-        const data_image = await response_image.json();
-
-        setImages(data_image.data);
         
       } catch(err) {
         console.log(`Erro: ${err}`);
@@ -59,10 +45,11 @@ function App() {
   }, [])
 
   return (
-    <body className="bg-custom-background">
+    <main className="bg-custom-background space-y-2"> 
 
-      <div className='items-center space-y-2'>
-        <Header/>
+      <Header/>
+
+      <div className='flex flex-col items-center space-y-6 mx-4'>
 
         <Carousel/>
 
@@ -78,25 +65,7 @@ function App() {
 
             {
               products.map((prod, index) => (
-                <Product key={index} Name={prod.product_name} Price={prod.product_price}></Product>
-              ))
-            }
-          </div>
-
-        </div>
-
-        <div>
-          <h1>Imagens</h1>
-
-          <div className='flex space-x-2'>
-            {/* Passamos o Product dentro de um () pois componentes react devem ser introduzidos assim */}
-
-            {
-              images.map((img) => (
-                <>
-                  <p>imagem: {img.file_data}</p> <br />
-                  <img src={`${img.file_data}`} alt={`${img.content_type}`} />
-                </>
+                <Product key={index} Name={prod.product.product_name} Price={prod.product.product_price} Image={prod.url_image}></Product>
               ))
             }
           </div>
@@ -105,13 +74,13 @@ function App() {
 
         <br />
         <div>
-          
-          <img src={`http://localhost:8080/files/perfil.png`} alt="Imagem Perfil" />
+          Teste de Imagem
+          <img src={`http://localhost:8080/files/Perfil/perfil.png`} alt="Imagem Perfil" />
         </div>
 
       </div>
 
-    </body>
+    </main>
   )
 }
 

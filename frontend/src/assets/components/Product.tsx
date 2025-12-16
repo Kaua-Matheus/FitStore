@@ -4,33 +4,43 @@ interface ProductProps {
     Name: string
     Price?: number
     Description?: string
+    Image?: string
 }
 
-export default function Product({Name, Price, Description}: ProductProps) {
+export default function Product({Name, Price, Description, Image}: ProductProps) {
 
     return (
 
         // Adicionar responsividade
         // Adicionada alteração de cores para debug
         <div className="
-            h-[20vh] w-[25vw]
-            sm:h-36 sm:w-44
-            md:h-40 md:w-48 md:bg-custom-secondary
-            lg:h-44 lg:w-52 lg:bg-custom-secondary
-            xl:h-48 xl:w-56 xl:bg-custom-tertiary
-            bg-custom-primary rounded-md border-md p-3">
-            <img src="" alt="Imagem Produto" />
+            h-[20vh] w-[22vw] text-sm
+            sm:h-[32vh] sm:w-[22vw]
+            md:h-[34vh] md:w-[23vw] md:bg-custom-secondary xl:text-md
+            lg:h-[36vh] lg:w-[24vw] lg:bg-custom-secondary xl:text-lg
+            xl:h-[38vh] xl:w-82 xl:bg-custom-tertiary xl:text-xl
+            bg-custom-primary rounded-md border-md p-4
+            flex flex-col">
 
-            Nome: {`${Name}`}
-            
-            {/* Estamos usando um breakline, mas o correto é de outro jeito */}
-            <br/>
+            <div className="text-center mb-2">
+                {`${Name}`}
+            </div>
 
-            Preço: {`${Price}`}
+            <div className="flex flex-1 items-center justify-center mb-2">
+                
+                <img className="
+                    h-[20vh] w-[20vh]
+                    xl:h-[26vh] xl:w-[26vh]
+                    rounded-md" 
+                src={Image} alt="Imagem produto" />
+            </div> 
 
-            <br/>
+            <div className="mb-2">
+                R$ {`${Price}`}
+            </div>
 
-            Descrição:  {`${Description}`}
+            {/* Descrição:  {`${Description}`} */}
+
         </div>
     )
 }
