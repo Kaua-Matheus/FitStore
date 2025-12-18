@@ -16,9 +16,10 @@ module.exports = {
         'custom-extra-light': '#FFD7F2',
         'custom-extra-dark': '#332B2F',
 
-        'custom-light': '#EDEEFF',
-        'custom-gray': '#A6A7B3',
-        'custom-dark': '#868791',
+        'custom-light': '#FFFFFF',
+        'custom-light-gray': '#F4F4F4',
+        'custom-gray': '#5E5E5E',
+        'custom-dark': '#252525',
       }
     },
   },

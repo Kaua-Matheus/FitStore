@@ -20,7 +20,6 @@ export default function Carousel() {
         const fetchAll = async () => {
 
             try {
-                // Arrumar, não está retornando as imagens
             const response = await fetch("http://localhost:8080/Banners");
             const data_image = await response.json();
 
@@ -50,7 +49,6 @@ export default function Carousel() {
                 Prev
             </Button>
 
-            {/* Adicionar descrição de imagens, podemos colocar isso em uma requisição http */}
             <div className="flex 
                 md:h-[24vh] md:h-[40vh]">
                 <img className="rounded-sm md:rounded-md lg:rounded-lg" src={`${images[index].url == undefined ? "" : images[index].url}`} alt={`${images[index].filename}`} />

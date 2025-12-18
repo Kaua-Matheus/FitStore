@@ -45,7 +45,7 @@ function App() {
   }, [])
 
   return (
-    <main className="bg-custom-background space-y-2"> 
+    <main className="bg-custom-light space-y-2"> 
 
       <Header/>
 
@@ -53,15 +53,15 @@ function App() {
 
         <Carousel/>
 
-        <div>
-          <p>Ganhe um desconto usando o cupom "SMART"</p>
+        <div className='flex w-[90vw] h-[5vh] rounded-lg 
+        justify-center items-center text-custom-light-gray font-semibold bg-custom-dark'>
+          <p>15% de desconto no próximo pedido "CUPOM"</p>
         </div>
 
         <div>
           <h1>Produtos</h1>
 
           <div className='flex space-x-2'>
-            {/* Passamos o Product dentro de um () pois componentes react devem ser introduzidos assim */}
 
             {
               products.map((prod, index) => (
@@ -70,12 +70,6 @@ function App() {
             }
           </div>
 
-        </div>
-
-        <br />
-        <div>
-          Teste de Imagem
-          <img src={`http://localhost:8080/files/Perfil/perfil.png`} alt="Imagem Perfil" />
         </div>
 
       </div>

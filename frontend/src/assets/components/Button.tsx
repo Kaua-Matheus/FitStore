@@ -4,29 +4,42 @@ import type { ReactNode } from "react";
 interface ButtonProps {
     children?: ReactNode,
     onClick?: () => void,
+    type?: "primary" | "secondary"
 }
 
 export default function Button({
     children,
-    onClick
+    onClick,
+    type,
 }: ButtonProps) {
 
-    // const [active, setActive] = useState(false);
+    if (type == "primary" || type == undefined) {
+        return (
 
-    return (
+            <button className={`
+                w-32
+                text-custom-light bg-custom-primary font-bold
+                text-center p-2 rounded-sm shadow-md
+                active:shadow-sm active:bg-custom-secondary
+                transition-colors duration-400
+                `}
+            onClick={onClick}>
+                {children || "Primary"}
+            </button>
+        )
+    } else {
+        return (
 
-        // Aumentar o tamanho dos textos
         <button className={`
-            h-8 w-12 text-sm
-            md:h-[4vh] md:w-[6vw] md:text-md
-        
-            text-custom-extra-dark hover:text-custom-extra-dark
-            bg-custom-extra-light hover:bg-custom-primary
-            active:bg-custom-secondary transition-colors duration-400
-            text-center p-2 rounded
+            w-32
+            text-custom-dark bg-custom-light-gray font-bold
+            text-center p-2 rounded-sm shadow-md
+            active:shadow-sm active:bg-custom-secondary
+            transition-colors duration-800
             `}
         onClick={onClick}>
-            {children || "Default Button"}
+            {children || "Secondary"}
         </button>
     )
+    }
 }
