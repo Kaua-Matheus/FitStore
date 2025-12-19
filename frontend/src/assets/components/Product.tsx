@@ -1,19 +1,17 @@
 import Button from "./Button";
 
-// Temos que inserir as props para realmente poder passar parâmetros
 interface ProductProps {
     Name: string
     Price?: number
-    Description?: string
+    // Description?: string
     Image?: string
 }
 
-export default function Product({Name, Price, Description, Image}: ProductProps) {
+export default function Product({Name, Price, Image}: ProductProps) {
 
     return (
 
         // Adicionar responsividade
-        // Adicionada alteração de cores para debug
         <div className="
             h-[50vh] w-[30vw]
             bg-custom-light-gray rounded-sm p-4 shadow-md

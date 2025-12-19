@@ -6,6 +6,7 @@ import { useEffect, useState } from "react"
 import Header from './assets/components/Header'
 import Carousel from './assets/components/Carousel'
 import Product from './assets/components/Product'
+import Footer from './assets/components/Footer'
 
 
 // Devemos colocar as definições de interface em outro arquivo separado
@@ -45,7 +46,7 @@ function App() {
   }, [])
 
   return (
-    <main className="bg-custom-light space-y-2"> 
+    <main className="bg-custom-light space-y-32"> 
 
       <Header/>
 
@@ -73,6 +74,8 @@ function App() {
         </div>
 
       </div>
+
+      <Footer/>
 
     </main>
   )

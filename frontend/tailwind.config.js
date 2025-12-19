@@ -20,6 +20,11 @@ module.exports = {
         'custom-light-gray': '#F4F4F4',
         'custom-gray': '#5E5E5E',
         'custom-dark': '#252525',
+      },
+      fontFamily: {
+        "outfit": ['Outfit', 'sans-serif'],
+        "fugaz": ['Fugaz One', 'cursive'],
+        "sans": ["Outfit", "ui-sans-serif", "system-ui"],
       }
     },
   },
