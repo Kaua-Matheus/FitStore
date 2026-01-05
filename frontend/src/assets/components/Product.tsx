@@ -1,3 +1,6 @@
+import { FaStar } from "react-icons/fa";
+
+// Componentes
 import Button from "./Button";
 
 interface ProductProps {
@@ -13,7 +16,7 @@ export default function Product({Name, Price, Image}: ProductProps) {
 
         // Adicionar responsividade
         <div className="
-            h-[50vh] w-[30vw]
+            h-[50vh] w-[18vw]
             bg-custom-light-gray rounded-sm p-4 shadow-md
             flex flex-col">
 
@@ -30,12 +33,16 @@ export default function Product({Name, Price, Image}: ProductProps) {
             </div>
 
             <div className="flex flex-col text-center justify-center">
-                <p className="font-light text-custom-secondary">R$ {`${Price?.toFixed(2)}`}</p>
+                <p className="font-light text-custom-secondary line-through">R$ {`${Price?.toFixed(2)}`}</p>
                 <p className="font-bold text-custom-primary">R$ {`${Price?.toFixed(2)}`}</p>
             </div>
 
-            <div className="text-center">
-                Stars
+            <div className="flex justify-center space-x-1 mb-1">
+                <FaStar className="text-yellow-500"/>
+                <FaStar className="text-yellow-500"/>
+                <FaStar className="text-yellow-500"/>
+                <FaStar className="text-yellow-500"/>
+                <FaStar className="text-yellow-500"/>
             </div>
 
             <div className="flex justify-center">

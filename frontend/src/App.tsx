@@ -60,7 +60,7 @@ function App() {
         </div>
 
         <div>
-          <h1>Produtos</h1>
+          <h1 className='font-fugaz'>Produtos</h1>
 
           <div className='flex space-x-2'>
 
