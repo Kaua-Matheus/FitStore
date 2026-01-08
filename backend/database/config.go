@@ -20,13 +20,26 @@ func (Product) TableName() string {
 	return "product";
 }
 
-type ProductImage struct {
+type Image struct {
 	IdImage		uuid.UUID	`json:"id_image" gorm:"type:uuid;primaryKey;default:gen_random_uuid()"`
 	ContentType	string		`json:"content_type"`
 	FilePath	string		`json:"file_path"`
 	FileName	string		`json:"file_name"`
 }
 
-func (ProductImage) TableName() string {
-	return "product_image";
+func (Image) TableName() string {
+	return "image";
+}
+
+type User struct {
+	IdUser				uuid.UUID	`json:"id_user" gorm:"type:uuid;primaryKey;default:gen_random_uuid()"`
+	UserName			string		`json:"user_name" gorm:"not null"`
+	UserLogin			string		`json:"login" gorm:"not null"`
+	UserPasswordHash	string		`json:"_" gorm:"column:password_hash;not null"`
+	CreatedAt			time.Time	`json:"created_at" gorm:"autoUpdateTime"`
+	LastUpdate			time.Time	`json:"last_update" gorm:"autoUpdateTime"`
+}
+
+func (User) TableName() string {
+	return "user"
 }

@@ -48,9 +48,9 @@ func UpdateProduct(db *gorm.DB, id uuid.UUID, product Product) (error) {
 	return nil;
 }
 
-func GetImage(db *gorm.DB, id uuid.UUID) (ProductImage, error) {
+func GetImage(db *gorm.DB, id uuid.UUID) (Image, error) {
 
-	image := ProductImage{};
+	image := Image{};
 	result := db.Where("id_image = ?", id).Find(&image);
 	if result.Error != nil {
 		return image, fmt.Errorf("%s", result.Error);
@@ -59,7 +59,7 @@ func GetImage(db *gorm.DB, id uuid.UUID) (ProductImage, error) {
 	return image, nil;
 }
 
-func AddProductImage(db *gorm.DB, image ProductImage) (error) {
+func AddImage(db *gorm.DB, image Image) (error) {
 
 	result := db.Create(&image); if result.Error != nil {
 		return fmt.Errorf("error trying to add the image %s", result.Error);
