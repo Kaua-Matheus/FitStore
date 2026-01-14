@@ -1,4 +1,4 @@
-package database
+package model
 
 import (
 	"fmt"
@@ -8,6 +8,7 @@ import (
 )
 
 
+// Product
 func GetAllProduct(db *gorm.DB) ([]Product, error) {
 
 	var alldata []Product;
@@ -48,6 +49,8 @@ func UpdateProduct(db *gorm.DB, id uuid.UUID, product Product) (error) {
 	return nil;
 }
 
+
+// Image
 func GetImage(db *gorm.DB, id uuid.UUID) (Image, error) {
 
 	image := Image{};
@@ -65,5 +68,27 @@ func AddImage(db *gorm.DB, image Image) (error) {
 		return fmt.Errorf("error trying to add the image %s", result.Error);
 	} else {
 		return nil;
+	}
+}
+
+
+// User
+func GetUserById(db *gorm.DB, id uuid.UUID) (User, error) {
+	
+	user := User{}
+	result := db.Where("id_user = ?", id).Find(&user); if result.Error != nil {
+		return User{}, fmt.Errorf("error trying to get the user");
+	} else {
+		return user, nil;
+	}
+}
+
+func GetUserByLogin(db *gorm.DB, user_login string) (User, error) {
+	
+	user := User{}
+	result := db.Where("user_login = ?", user_login).Find(&user); if result.Error != nil {
+		return User{}, fmt.Errorf("error trying to get the user");
+	} else {
+		return user, nil;
 	}
 }

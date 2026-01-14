@@ -8,7 +8,7 @@ import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 
-	"github.com/Kaua-Matheus/fitstore/backend/database"
+	"github.com/Kaua-Matheus/fitstore/backend/model"
 )
 
 func Product(router *gin.Engine, db *gorm.DB) {
@@ -16,7 +16,7 @@ func Product(router *gin.Engine, db *gorm.DB) {
 	// GET
 	router.GET("/product", func(ctx *gin.Context) {
 
-		products, err := database.GetAllProduct(db)
+		products, err := model.GetAllProduct(db)
 		if err != nil {
 			fmt.Printf("An error occours trying to get the data: %s\n", err)
 		}
@@ -24,7 +24,7 @@ func Product(router *gin.Engine, db *gorm.DB) {
 		var resultList []map[string]any
 
 		for _, product := range products {
-			image, err := database.GetImage(db, product.IdImage)
+			image, err := model.GetImage(db, product.IdImage)
 			if err != nil {
 				fmt.Printf("An error occours trying to get the image: %s\n", err)
 				return
@@ -45,13 +45,13 @@ func Product(router *gin.Engine, db *gorm.DB) {
 
 		id := ctx.Param("id")
 
-		product, err := database.GetProduct(db, uuid.MustParse(id))
+		product, err := model.GetProduct(db, uuid.MustParse(id))
 		if err != nil {
 			fmt.Printf("An error occours trying to get the data: %s\n", err)
 			return
 		}
 
-		image, err := database.GetImage(db, product.IdImage)
+		image, err := model.GetImage(db, product.IdImage)
 		if err != nil {
 			fmt.Printf("An error occours trying to get the image: %s\n", err)
 			return
@@ -69,7 +69,7 @@ func Product(router *gin.Engine, db *gorm.DB) {
 	// POST
 	router.POST("/product", func(ctx *gin.Context) {
 
-		product := database.Product{}
+		product := model.Product{}
 
 		if err := ctx.BindJSON(&product); err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{
@@ -77,7 +77,7 @@ func Product(router *gin.Engine, db *gorm.DB) {
 			})
 		}
 
-		database.AddProduct(db, product)
+		model.AddProduct(db, product)
 
 		ctx.JSON(http.StatusOK, gin.H{
 			"message": "Produto adicionado com sucesso",
@@ -87,7 +87,7 @@ func Product(router *gin.Engine, db *gorm.DB) {
 	// PUT
 	router.PUT("/product/:id", func(ctx *gin.Context) {
 
-		product := database.Product{}
+		product := model.Product{}
 
 		str_id := ctx.Param("id")
 
@@ -97,7 +97,7 @@ func Product(router *gin.Engine, db *gorm.DB) {
 			})
 		}
 
-		database.UpdateProduct(db, uuid.MustParse(str_id), product)
+		model.UpdateProduct(db, uuid.MustParse(str_id), product)
 
 		ctx.JSON(http.StatusOK, gin.H{
 			"message": "Produto adicionado com sucesso",

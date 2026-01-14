@@ -1,5 +1,5 @@
 package middleware
 
-func Conn() {
-
+func Auth() {
+	
 }

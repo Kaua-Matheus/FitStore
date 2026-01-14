@@ -6,8 +6,8 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 
-	"github.com/Kaua-Matheus/fitstore/backend/database"
-	"github.com/Kaua-Matheus/fitstore/backend/server/handler"
+	"github.com/Kaua-Matheus/fitstore/backend/model"
+	"github.com/Kaua-Matheus/fitstore/backend/controller/handler"
 )
 
 func Run() {
@@ -20,7 +20,7 @@ func Run() {
 		AllowCredentials: true,
 	}))
 
-	db, err := database.NewConnection()
+	db, err := model.NewConnection()
 	if err != nil {
 		fmt.Println(err)
 		return
