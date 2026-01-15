@@ -4,42 +4,94 @@ import type { ReactNode } from "react";
 interface ButtonProps {
     children?: ReactNode,
     onClick?: () => void,
-    type?: "primary" | "secondary"
+    className?: string,
+    type?: "primary" | "secondary" | "light" | "dark"
 }
 
 export default function Button({
     children,
     onClick,
+    className,
     type,
 }: ButtonProps) {
 
-    if (type == "primary" || type == undefined) {
-        return (
+    switch (type) {
+        case "primary":
+            return (
 
             <button className={`
-                w-32
-                text-custom-light bg-custom-primary font-bold
-                text-center p-2 rounded-sm shadow-md
-                active:shadow-sm active:bg-custom-secondary
-                transition-colors duration-400
-                `}
-            onClick={onClick}>
-                {children || "Primary"}
-            </button>
-        )
-    } else {
-        return (
+                    w-32
+                    text-custom-light bg-custom-primary font-bold
+                    text-center p-2 rounded-sm shadow-md
+                    active:shadow-sm active:bg-custom-secondary
+                    transition-colors duration-400
+                    ` + ` ${className}`}
+                onClick={onClick}>
+                    {children || "Primary"}
+                </button>
+            )
+            
+        case "secondary":
+            return (
 
-        <button className={`
-            w-32
-            text-custom-dark bg-custom-light-gray font-bold
-            text-center p-2 rounded-sm shadow-md
-            active:shadow-sm active:bg-custom-secondary
-            transition-colors duration-800
-            `}
-        onClick={onClick}>
-            {children || "Secondary"}
-        </button>
-    )
+            <button className={`
+                    w-32
+                    text-custom-dark bg-custom-light-gray font-bold
+                    text-center p-2 rounded-sm
+                    hover:shadow-md
+                    active:shadow-sm active:bg-custom-secondary
+                    transition-colors duration-800
+                    ` + ` ${className}`}
+                onClick={onClick}>
+                    {children || "Secondary"}
+                </button>
+            )
+
+        case "light":
+            return (
+
+            <button className={`
+                    w-32
+                    text-custom-dark bg-custom-light-gray font-bold
+                    text-center p-2 rounded-sm shadow-md
+                    border border-custom-gray
+                    active:shadow-sm active:bg-custom-secondary
+                    transition-colors duration-400
+                    ` + ` ${className}`}
+                onClick={onClick}>
+                    {children || "Light"}
+                </button>
+            )
+
+        case "dark":
+            return (
+
+            <button className={`
+                    w-32
+                    text-custom-light-gray bg-custom-dark font-bold
+                    text-center p-2 rounded-sm shadow-md
+                    border border-custom-gray
+                    active:shadow-sm active:bg-custom-secondary
+                    transition-colors duration-400
+                    ` + ` ${className}`}
+                onClick={onClick}>
+                    {children || "Dark"}
+                </button>
+            )
+
+        default:
+            return (
+            <button className={`
+                    w-32
+                    text-custom-light bg-custom-primary font-bold
+                    text-center p-2 rounded-sm shadow-md
+                    active:shadow-sm active:bg-custom-secondary
+                    transition-colors duration-400
+                    ` + ` ${className}`}
+                onClick={onClick}>
+                    {children || "Primary"}
+                </button>
+            )
+
     }
 }

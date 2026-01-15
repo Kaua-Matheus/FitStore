@@ -1,10 +1,10 @@
 // React Icons
-import { CiSearch } from "react-icons/ci"
-import { CiMenuBurger } from "react-icons/ci";
+import { CiSearch, CiMenuBurger, CiShoppingCart } from "react-icons/ci"
 
 // Componentes
 import Button from "./Button";
 import Logo from "./Logo";
+import User from "./User"
 
 export default function Header() {
     return (
@@ -28,13 +28,20 @@ export default function Header() {
                         text-custom-dark
                         bg-custom-light-gray
                         active:bg-custom-secondary transition-colors duration-400
-                        shadow-md
+                        hover:shadow-md cursor-pointer
                         text-center p-2 rounded"/>
+                    <CiShoppingCart size={40} className="
+                        text-custom-dark
+                        bg-custom-light-gray
+                        active:bg-custom-secondary transition-colors duration-400
+                        hover:shadow-md cursor-pointer
+                        text-center p-2 rounded"/>
+                    <User />
                     <CiMenuBurger size={40} className="
                         text-custom-dark
                         bg-custom-light-gray
                         active:bg-custom-secondary transition-colors duration-400
-                        shadow-md
+                        hover:shadow-md cursor-pointer
                         text-center p-2 rounded"/>
                 </div>
             </div>

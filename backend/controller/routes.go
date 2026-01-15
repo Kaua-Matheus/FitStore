@@ -28,10 +28,11 @@ func Run() {
 		fmt.Println("Conectado.")
 	}
 
-	handler.Debug(router)
-	handler.Product(router, db)
-	handler.Image(router, db)
-	handler.SetupFileRoutes(router)
+	handler.Debug(router);
+	handler.Product(router, db);
+	handler.Image(router, db);
+	handler.SetupFileRoutes(router);
+	handler.User(router, db);
 
 	router.Run(":8080")
 }
