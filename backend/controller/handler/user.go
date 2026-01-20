@@ -65,7 +65,7 @@ func User(router *gin.Engine, db *gorm.DB) {
 
 	})
 
-	router.POST("/loguser", func(ctx *gin.Context){
+	router.POST("/userlogin", func(ctx *gin.Context){
 
 		var bindUser = model.UserReq{}
 		if err := ctx.BindJSON(&bindUser); err != nil {
