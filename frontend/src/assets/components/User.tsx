@@ -51,6 +51,7 @@ export default function User() {
                 headers: {
                     "Content-Type": "application/json",
                 },
+                credentials: "include",
                 body: JSON.stringify({"user_name": parsedLogin, "login": parsedLogin, "password": parsedPassword})
             })
             console.log("Usuário criado com sucesso.")
@@ -66,15 +67,17 @@ export default function User() {
 
             var resp = await fetch("http://localhost:8080/userlogin", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json", },
+                credentials: "include",
                 body: JSON.stringify({"user_name": parsedLogin, "login": parsedLogin, "password": parsedPassword})
             })
 
             var data = await resp.json();
-            console.log(data ? "Acesso feito" : "Acesso negado"); // Falta adicionar um jwt token para salvar a sessão
-            data ? setOpened(false) : null;
+            console.log(data.auth ? "Acesso feito" : "Acesso negado");
+            
+
+            data.auth ? setOpened(false) : null;
+
             return;
         } catch (err) {
             console.log(`Error: ${err}`)

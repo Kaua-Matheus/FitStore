@@ -61,9 +61,11 @@ func User(router *gin.Engine, db *gorm.DB) {
 							"message": "error trying to add user",
 						})
 					} else {
+						
+						utils.SetAuthCookie(ctx, token);
+
 						ctx.JSON(http.StatusOK, gin.H{
 							"message": "user added successfully",
-							"token": token,
 						})
 					}
 				}
@@ -95,9 +97,11 @@ func User(router *gin.Engine, db *gorm.DB) {
 						})
 						return
 					} else {
+
+						utils.SetAuthCookie(ctx, token);
+
 						ctx.JSON(http.StatusOK, gin.H{
 							"auth": response,
-							"token": token,
 						})
 					}
 				} else {
@@ -110,6 +114,13 @@ func User(router *gin.Engine, db *gorm.DB) {
 		}
 	})
 
+	router.POST("/logout", func(ctx *gin.Context) {
+		utils.ClearAuthCookie(ctx);
+
+		ctx.JSON(http.StatusOK, gin.H{
+			"message": "logout successful",
+		})
+	})
 	
 	// GET - Protegido (Implementar Middleware)
 	// Pode ser interessante aplicar regras por conta dos usuários especiais 
