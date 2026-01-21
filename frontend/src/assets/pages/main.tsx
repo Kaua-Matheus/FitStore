@@ -1,12 +1,14 @@
 import '../../App.css'
 
+// React
 import { useEffect, useState } from "react"
 
-// Importações de componentes
+// Componentes
 import Header from '../components/Header'
 import Carousel from '../components/Carousel'
 import Product from '../components/Product'
 import Footer from '../components/Footer'
+import { useToast } from '../context/useToast'
 
 type ProductData = {
   product: {
@@ -19,6 +21,7 @@ type ProductData = {
 }
 
 export default function Main() {
+  const { addToast } = useToast();
 
     const [products, setProducts] = useState<ProductData[]>([])
     
@@ -71,6 +74,7 @@ export default function Main() {
     
             </div>
 
+            {/* <button onClick={() => {addToast("Aooooo", "warning")}}>Ativar toast</button> */}
         </div>
     
         <Footer/>

@@ -192,7 +192,7 @@ export default function User() {
                                     </div>
                                 </div>
                                 <div className="flex flex-col space-y-2">
-                                    <Button onClick={() => loginUser(inputLogin, inputPassword)} type="dark" className="w-[30vw]">Criar</Button>
+                                    <Button onClick={() => createUser(inputLogin, inputPassword)} type="dark" className="w-[30vw]">Criar</Button>
                                     <Button onClick={() => setAccess(AccessMode.LOGIN)} type="light" className="w-[30vw] font-light">Possui conta? Acesse aqui</Button>
                                 </div>
                                 <div className="flex flex-col">
