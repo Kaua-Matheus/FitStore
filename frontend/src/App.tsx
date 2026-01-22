@@ -2,6 +2,7 @@ import './App.css'
 
 import { ToastProvider } from './assets/context/useToast.tsx'
 import ToastContainer from './assets/components/Toast.tsx'
+import { AuthProvider } from './assets/context/auth.tsx'
 
 // Importação Dom
 import { BrowserRouter } from "react-router"
@@ -11,10 +12,14 @@ function App() {
 
   return (
     <BrowserRouter>
-      <ToastProvider>
-        <AppRoutes />
-        <ToastContainer />
-      </ToastProvider>
+
+      <AuthProvider>
+        <ToastProvider>
+          <AppRoutes />
+          <ToastContainer />
+        </ToastProvider>
+      </AuthProvider>
+      
     </BrowserRouter>
   )
 }

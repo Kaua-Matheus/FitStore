@@ -8,6 +8,8 @@ import { FaGoogle } from "react-icons/fa";
 
 // Componentes
 import Button from "./Button";
+import { useToast } from '../context/useToast'
+import { useAuth } from "../context/auth";
 
 interface User {
     login: string;
@@ -22,6 +24,9 @@ const AccessMode = {
 type AccessMode = typeof AccessMode[keyof typeof AccessMode];
 
 export default function User() {
+
+    const { addToast } = useToast();
+    const { checkAuth } = useAuth();
 
     const [opened, setOpened] = useState(false)
     const [hidden, setHidden] = useState(true)
@@ -41,12 +46,12 @@ export default function User() {
         }
     })
 
-    const createUser = async (login:RefObject<HTMLInputElement | null>, password:RefObject<HTMLInputElement | null>) => {
+    const userRegister = async (login:RefObject<HTMLInputElement | null>, password:RefObject<HTMLInputElement | null>) => {
         try {
             var parsedLogin = login.current != null ? login.current.value : ""
             var parsedPassword = password.current != null ? password.current.value : ""
 
-            await fetch("http://localhost:8080/user", {
+            await fetch("http://localhost:8080/user/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -54,7 +59,9 @@ export default function User() {
                 credentials: "include",
                 body: JSON.stringify({"user_name": parsedLogin, "login": parsedLogin, "password": parsedPassword})
             })
-            console.log("Usuário criado com sucesso.")
+            setOpened(false);
+            addToast("Registro executado com sucesso, bem-vindo!", "success");
+            checkAuth();
         } catch (err) {
             console.log(`Error: ${err}`)
         }
@@ -65,7 +72,7 @@ export default function User() {
             var parsedLogin = login.current != null ? login.current.value : ""
             var parsedPassword = password.current != null ? password.current.value : ""
 
-            var resp = await fetch("http://localhost:8080/userlogin", {
+            var resp = await fetch("http://localhost:8080/user/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json", },
                 credentials: "include",
@@ -73,10 +80,14 @@ export default function User() {
             })
 
             var data = await resp.json();
-            console.log(data.auth ? "Acesso feito" : "Acesso negado");
-            
 
-            data.auth ? setOpened(false) : null;
+            if (data.authenticated) {
+                setOpened(false); 
+                addToast("Login executado com sucesso", "success");
+                checkAuth();
+            } else {
+                addToast("Senha incorreta", "error");
+            }
 
             return;
         } catch (err) {
@@ -192,7 +203,7 @@ export default function User() {
                                     </div>
                                 </div>
                                 <div className="flex flex-col space-y-2">
-                                    <Button onClick={() => createUser(inputLogin, inputPassword)} type="dark" className="w-[30vw]">Criar</Button>
+                                    <Button onClick={() => userRegister(inputLogin, inputPassword)} type="dark" className="w-[30vw]">Criar</Button>
                                     <Button onClick={() => setAccess(AccessMode.LOGIN)} type="light" className="w-[30vw] font-light">Possui conta? Acesse aqui</Button>
                                 </div>
                                 <div className="flex flex-col">
