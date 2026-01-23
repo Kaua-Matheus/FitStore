@@ -133,6 +133,7 @@ func User(router *gin.Engine, db *gorm.DB) {
 		}
 
 		if token == "" {
+			utils.ClearAuthCookie(ctx);
 			ctx.JSON(http.StatusBadRequest, gin.H{
 				"authenticated": false,
 				"message": "token doesn't exist, try register or login",
@@ -149,10 +150,18 @@ func User(router *gin.Engine, db *gorm.DB) {
 			return
 		}
 
+		user_login, err := utils.GetUserLoginFromToken(token); if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"authenticated": false,
+				"message": "can't take the user_login",
+			})
+			return
+		}
+
 		ctx.JSON(http.StatusOK, gin.H{
 			"authenticated": true,
 			"user": gin.H{
-				"username": "username",
+				"user_login": user_login,
 			},
 			"message": "user is authenticated",
 		})
@@ -166,6 +175,7 @@ func User(router *gin.Engine, db *gorm.DB) {
 			"message": "logout successful",
 		})
 	})
+
 	
 	// GET - Protegido (Implementar Middleware)
 	// Pode ser interessante aplicar regras por conta dos usuários especiais 
@@ -182,6 +192,7 @@ func User(router *gin.Engine, db *gorm.DB) {
 			
 		ctx.JSON(http.StatusOK, gin.H{
 			"user_name": user.UserName,
+			"profile_image": user.IdImage,
 		})
 	})
 }

@@ -1,11 +1,12 @@
 import { useContext, createContext, type ReactNode, useState, useEffect } from "react";
 
 interface User {
-    userName: string;
+    "user_login": string;
 }
 
 interface AuthContextType {
     user: User | null;
+    isLoggedIn: boolean;
     isLoading: boolean;
     checkAuth: () => Promise<void>
 }
@@ -14,7 +15,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null)
-    const [isLoading, setIsLoading] = useState(true) // Usamos isLoading para adquirir informações sobre o carregamento e evitar fazer redenrização antes de carregar os dados
+    const [isLoading, setIsLoading] = useState(true)
 
     const checkAuth = async () => {
         try {
@@ -26,14 +27,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
             if (data.authenticated) {
                 setUser(data.user);
-                console.log("Autenticado") // A ideia é utilizarmos a validação para identificar o que será renderizado
+                return
             } else {
                 setUser(null);
-                console.log("Não Autenticado")
+                return
             }
 
         } catch (e) {
-            console.log("error trying to authenticate")
+            console.log(`error trying to authenticate: ${e}`)
         }
         
     }
@@ -48,9 +49,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         initAuth()
     }, [])
 
+    const isLoggedIn = !!user
+
     return (
         <AuthContext.Provider value={{
             user,
+            isLoggedIn,
             isLoading,
             checkAuth,
         }}>

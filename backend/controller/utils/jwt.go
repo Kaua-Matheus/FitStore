@@ -23,10 +23,10 @@ func getEnv() (string) {
 
 var secretKey = []byte(getEnv())
 
-func CreateToken(username string) (string, error) {
+func CreateToken(user_login string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
 		jwt.MapClaims{
-			"username": username,
+			"user_login": user_login,
 			"exp":      time.Now().Add(time.Hour * 24).Unix(), // Pode ser alterado para diminuir ou aumentar o tempo do token
 		},
 	)
@@ -56,4 +56,33 @@ func VerifyToken(tokenString string) error {
 	}
 
 	return nil
+}
+
+func GetUserLoginFromToken(tokenString string) (string, error) {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+		return secretKey, nil
+	})
+
+	if err != nil {
+		return "", nil
+	}
+
+	if !token.Valid {
+		return "", fmt.Errorf("invalid token")
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		return "", fmt.Errorf("invalid claims")
+	}
+
+	user_login, ok := claims["user_login"].(string)
+	if !ok {
+		return "", fmt.Errorf("user_login not found in token")
+	}
+
+	return user_login, nil
 }
