@@ -1,13 +1,13 @@
-import '../../App.css'
+import '../App.css'
 
 // React
 import { useEffect, useState } from "react"
 
 // Componentes
-import Header from '../components/Header'
-import Carousel from '../components/Carousel'
-import Product from '../components/Product'
-import Footer from '../components/Footer'
+import Header from '../assets/components/structure/Header'
+import Carousel from '../assets/components/structure/Carousel'
+import Product from '../assets/components/elements/Product'
+import Footer from '../assets/components/structure/Footer'
 
 type ProductData = {
   product: {

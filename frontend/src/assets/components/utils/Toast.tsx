@@ -1,6 +1,6 @@
 // React Icons
 import { IoCloseCircleOutline } from "react-icons/io5";
-import { useToast } from "../context/useToast";
+import { useToast } from "../../context/useToast";
 import { useState } from "react";
 
 interface ToastCardProps {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-import Button from "./Button";
+import Button from "../elements/Button";
 
 type Image = {
     filename: string

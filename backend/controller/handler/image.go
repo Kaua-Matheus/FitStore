@@ -7,7 +7,8 @@ import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 
-	"github.com/Kaua-Matheus/fitstore/backend/model"
+	"github.com/Kaua-Matheus/fitstore/backend/model/entitie"
+	"github.com/Kaua-Matheus/fitstore/backend/model/handler"
 )
 
 func Image(router *gin.Engine, db *gorm.DB) {
@@ -17,7 +18,7 @@ func Image(router *gin.Engine, db *gorm.DB) {
 	router.GET("/image/:id", func(ctx *gin.Context) {
 
 		id := ctx.Param("id")
-		image, err := model.GetImage(db, uuid.MustParse(id))
+		image, err := handler.GetImage(db, uuid.MustParse(id))
 		if err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{
 				"error": "Erro ao tentar adquirir a imagem",
@@ -34,7 +35,7 @@ func Image(router *gin.Engine, db *gorm.DB) {
 	// POST
 	// Cria um registro de uma entidade Image
 	router.POST("/image", func(ctx *gin.Context) {
-		image := model.Image{}
+		image := entitie.Image{}
 
 		if err := ctx.BindJSON(&image); err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{
@@ -43,7 +44,7 @@ func Image(router *gin.Engine, db *gorm.DB) {
 			return
 		}
 
-		model.AddImage(db, image)
+		handler.AddImage(db, image)
 
 		ctx.JSON(http.StatusOK, gin.H{
 			"message": "Imagem adicionada com sucesso",

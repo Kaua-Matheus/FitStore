@@ -7,6 +7,8 @@ import (
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+
+	"github.com/Kaua-Matheus/fitstore/backend/model/entitie"
 )
 
 func NewConnection() (*gorm.DB, error) {
@@ -29,10 +31,11 @@ func NewConnection() (*gorm.DB, error) {
 		return nil, fmt.Errorf("error opening connection: %s", err);
 	};
 
+	// Faz a atualização das entidades no banco
 	err = db.AutoMigrate(
-		&Product{},
-		&Image{},
-		&User{},
+		&entitie.Product{},
+		&entitie.Image{},
+		&entitie.User{},
 	); if err != nil {
 		return nil, fmt.Errorf("error in automigrate: %s", err);
 	};

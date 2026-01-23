@@ -1,3 +1,4 @@
+// React
 import type { ReactNode } from "react";
 // import { useState } from "react";
 
@@ -18,7 +19,6 @@ export default function Button({
     switch (type) {
         case "primary":
             return (
-
             <button className={`
                     w-32
                     text-custom-light bg-custom-primary font-bold

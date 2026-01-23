@@ -8,7 +8,8 @@ import (
 	_"github.com/google/uuid"
 	"gorm.io/gorm"
 
-	"github.com/Kaua-Matheus/fitstore/backend/model"
+	"github.com/Kaua-Matheus/fitstore/backend/model/entitie"
+	"github.com/Kaua-Matheus/fitstore/backend/model/handler"
 	"github.com/Kaua-Matheus/fitstore/backend/controller/utils"
 	"github.com/Kaua-Matheus/fitstore/backend/controller/middleware"
 )
@@ -18,7 +19,7 @@ func User(router *gin.Engine, db *gorm.DB) {
 	// POST - Público
 	router.POST("/user/register", func(ctx *gin.Context) {
 
-		userReq := model.UserReq{}
+		userReq := entitie.UserReq{}
 		if err := ctx.BindJSON(&userReq); err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{
 				"message": "error trying to bind json",
@@ -26,7 +27,7 @@ func User(router *gin.Engine, db *gorm.DB) {
 			return
 		} else {
 
-			if userDb, err := model.GetUserByLogin(db, userReq.UserLogin); err != nil {
+			if userDb, err := handler.GetUserByLogin(db, userReq.UserLogin); err != nil {
 				ctx.JSON(http.StatusBadRequest, gin.H{
 					"message": "couldn't get information about the user_login",
 				})
@@ -47,7 +48,7 @@ func User(router *gin.Engine, db *gorm.DB) {
 					return
 				}
 
-				var user = model.User{
+				var user = entitie.User{
 					UserName: userReq.UserName, 
 					UserLogin: userReq.UserLogin, 
 					UserPasswordHash: password,
@@ -59,7 +60,7 @@ func User(router *gin.Engine, db *gorm.DB) {
 					})
 					return
 				} else {
-					err = model.AddUser(db, user); if err != nil {
+					err = handler.AddUser(db, user); if err != nil {
 						ctx.JSON(http.StatusBadRequest, gin.H{
 							"message": "error trying to add user",
 						})
@@ -80,14 +81,14 @@ func User(router *gin.Engine, db *gorm.DB) {
 
 	router.POST("/user/login", func(ctx *gin.Context){
 
-		var bindUser = model.UserReq{}
+		var bindUser = entitie.UserReq{}
 		if err := ctx.BindJSON(&bindUser); err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{
 				"message": "error trying to bind json",
 			})
 			return
 		} else {
-			var user, err = model.GetUserByLogin(db, bindUser.UserLogin); if err != nil {
+			var user, err = handler.GetUserByLogin(db, bindUser.UserLogin); if err != nil {
 				ctx.JSON(http.StatusBadRequest, gin.H{
 					"message": "error trying to get user",
 				})
@@ -183,7 +184,7 @@ func User(router *gin.Engine, db *gorm.DB) {
 	router.GET("/user/get/:login", middleware.Auth(), func(ctx *gin.Context) {
 		
 		login := ctx.Param("login");
-		user, err := model.GetUserByLogin(db, login); if err != nil {
+		user, err := handler.GetUserByLogin(db, login); if err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{
 				"message": "error trying to get the user",
 			})

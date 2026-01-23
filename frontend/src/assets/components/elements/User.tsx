@@ -8,8 +8,8 @@ import { FaGoogle } from "react-icons/fa";
 
 // Componentes
 import Button from "./Button";
-import { useToast } from '../context/useToast'
-import { useAuth } from "../context/auth";
+import { useToast } from '../../context/useToast'
+import { useAuth } from "../../context/useAuth";
 
 
 interface User {
