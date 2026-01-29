@@ -4,9 +4,8 @@ import '../App.css'
 import Header from '../assets/components/structure/Header'
 import Footer from '../assets/components/structure/Footer'
 
-
 export default function Contato() {
-
+  
   return (
     <main className="bg-custom-light space-y-32">
 

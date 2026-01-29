@@ -10,9 +10,14 @@ import (
 
 	"github.com/Kaua-Matheus/fitstore/backend/model/entitie"
 	"github.com/Kaua-Matheus/fitstore/backend/model/handler"
+	"github.com/Kaua-Matheus/fitstore/backend/controller/utils"
 )
 
 func Product(router *gin.Engine, db *gorm.DB) {
+
+	ip, err := utils.GetLocalIP(); if err != nil {
+		ip = "localhost"
+	}
 
 	// GET
 	router.GET("/product", func(ctx *gin.Context) {
@@ -32,7 +37,7 @@ func Product(router *gin.Engine, db *gorm.DB) {
 			} else {
 				resultList = append(resultList, map[string]any{
 					"product":   product,
-					"url_image": fmt.Sprintf("http://localhost:8080/files/%s/%s%s", image.FilePath, image.FileName, image.ContentType),
+					"url_image": fmt.Sprintf("http://%s:8080/files/%s/%s%s", ip, image.FilePath, image.FileName, image.ContentType),
 				})
 			}
 		}
@@ -62,7 +67,7 @@ func Product(router *gin.Engine, db *gorm.DB) {
 			"data": product,
 			"image": gin.H{
 				"file_name": image.FileName + image.ContentType,
-				"url":       fmt.Sprintf("http://localhost:8080/files/%s/%s%s", image.FilePath, image.FileName, image.ContentType),
+				"url":       fmt.Sprintf("http://%s:8080/files/%s/%s%s", ip, image.FilePath, image.FileName, image.ContentType),
 			},
 		})
 	})

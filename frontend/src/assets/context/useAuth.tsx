@@ -1,4 +1,8 @@
+// React
 import { useContext, createContext, type ReactNode, useState, useEffect } from "react";
+
+// Handler
+import GetLocalIp from "../handler/http";
 
 interface User {
     "user_login": string;
@@ -14,12 +18,13 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+    
     const [user, setUser] = useState<User | null>(null)
     const [isLoading, setIsLoading] = useState(true)
 
     const checkAuth = async () => {
         try {
-            const response = await fetch("http://localhost:8080/user/auth", {
+            const response = await fetch(`http://${GetLocalIp()}:8080/user/auth`, {
                 method: "GET",
                 credentials: "include",
             });
@@ -66,7 +71,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export function useAuth() {
     const context = useContext(AuthContext)
     if (!context) {
-        throw new Error('useAuth must be used within an AuthProvider')
+        throw new Error("useAuth must be used within an AuthProvider")
     }
     return context;
 }

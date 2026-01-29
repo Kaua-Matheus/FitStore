@@ -7,9 +7,15 @@ import (
 	"path/filepath"
 
 	"github.com/gin-gonic/gin"
+
+	"github.com/Kaua-Matheus/fitstore/backend/controller/utils"
 )
 
 func SetupFileRoutes(router *gin.Engine) {
+	
+	ip, err := utils.GetLocalIP(); if err != nil {
+		ip = "localhost"
+	}
 
 	// GET
 	// Adquire todas as imagens de dentro da pasta
@@ -32,7 +38,7 @@ func SetupFileRoutes(router *gin.Engine) {
 			if !file.IsDir() {
 				fileInfo := map[string]string{
 					"filename": file.Name(),
-					"url":      fmt.Sprintf("http://localhost:8080/files/%s/%s", dir, file.Name()),
+					"url":      fmt.Sprintf("http://%s:8080/files/%s/%s", ip, dir, file.Name()),
 				}
 				fileList = append(fileList, fileInfo)
 			}

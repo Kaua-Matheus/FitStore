@@ -2,6 +2,9 @@ import { useEffect, useState } from "react"
 
 import Button from "../elements/Button";
 
+// Handler
+import GetLocalIp from "../../handler/http";
+
 type Image = {
     filename: string
     url: string
@@ -16,11 +19,10 @@ export default function Carousel() {
     const prev = () => {setIndex((index - 1 + images.length) % images.length)};
 
     useEffect(() => {
-
         const fetchAll = async () => {
 
             try {
-            const response = await fetch("http://localhost:8080/Banners");
+            const response = await fetch(`http://${GetLocalIp()}:8080/Banners`);
             const data_image = await response.json();
 
 

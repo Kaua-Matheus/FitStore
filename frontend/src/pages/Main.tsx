@@ -9,6 +9,12 @@ import Carousel from '../assets/components/structure/Carousel'
 import Product from '../assets/components/elements/Product'
 import Footer from '../assets/components/structure/Footer'
 
+// Context
+// import { useHttp } from '../assets/context/useHttp'
+
+// Handler
+import GetLocalIp from '../assets/handler/http'
+
 type ProductData = {
   product: {
     "id": string,
@@ -24,12 +30,11 @@ export default function Main() {
   const [products, setProducts] = useState<ProductData[]>([])
 
   useEffect(() => {
-
     const fetchAll = async () => {
 
       try {
         // Response Product
-        const response_product = await fetch("http://localhost:8080/product");
+        const response_product = await fetch(`http://${GetLocalIp()}:8080/product`);
         const data_product = await response_product.json();
 
         setProducts(data_product.data);

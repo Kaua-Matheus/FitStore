@@ -8,9 +8,14 @@ import { FaGoogle } from "react-icons/fa";
 
 // Componentes
 import Button from "./Button";
+
+// Context
 import { useToast } from '../../context/useToast'
 import { useAuth } from "../../context/useAuth";
+// import { useHttp } from "../../context/useHttp";
 
+// Handler
+import GetLocalIp from "../../handler/http";
 
 interface User {
     login: string;
@@ -63,6 +68,7 @@ export default function User() {
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
+
         if (opened) {
             document.body.style.overflow = "hidden";
         } else {
@@ -84,7 +90,7 @@ export default function User() {
             var parsedLogin = login.current != null ? login.current.value : ""
             var parsedPassword = password.current != null ? password.current.value : ""
 
-            await fetch("http://localhost:8080/user/register", {
+            await fetch(`http://${GetLocalIp()}:8080/user/register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -106,7 +112,7 @@ export default function User() {
             var parsedLogin = login.current != null ? login.current.value : ""
             var parsedPassword = password.current != null ? password.current.value : ""
 
-            const response = await fetch("http://localhost:8080/user/login", {
+            const response = await fetch(`http://${GetLocalIp()}:8080/user/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json", },
                 credentials: "include",
@@ -132,14 +138,13 @@ export default function User() {
 
     const logoutUser = async () => {
         try {
-            await fetch("http://localhost:8080/user/logout", {
+            await fetch(`http://${GetLocalIp()}:8080/user/logout`, {
                 method: "GET",
                 credentials: "include"
             })
             setOpened(false);
             addToast("Logout executado com sucesso", "success");
             checkAuth()
-            console.log(isLoggedIn)
         } catch (err) {
             console.log(`Error: ${err}`)
         }
@@ -148,21 +153,21 @@ export default function User() {
     async function getImage() {
         try {
             setIsLoading(true)
-            const response = await fetch(`http://localhost:8080/user/get/${user?.user_login}`, {
+            const response = await fetch(`http://${GetLocalIp()}:8080/user/get/${user?.user_login}`, {
                 method: "GET",
                 credentials: "include",
             })
 
             const jsonResponse = await response.json()
 
-            const image = await fetch(`http://localhost:8080/image/${jsonResponse.profile_image}`, {
+            const image = await fetch(`http://${GetLocalIp()}:8080/image/${jsonResponse.profile_image}`, {
                 method: "GET",
                 credentials: "include",
             })
 
             const jsonImage = await image.json()
 
-            return `http://localhost:8080/files/${jsonImage.data.file_path}/${jsonImage.data.file_name}${jsonImage.data.content_type}` // Retirar do endpoint o data, mandando só o arquivo final
+            return `http://${GetLocalIp()}:8080/files/${jsonImage.data.file_path}/${jsonImage.data.file_name}${jsonImage.data.content_type}` // Retirar do endpoint o data, mandando só o arquivo final
         } catch (err) {
             console.log(`Error: ${err}`)
         }
