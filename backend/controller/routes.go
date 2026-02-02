@@ -2,8 +2,10 @@ package server
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/gin-contrib/cors"
+	"github.com/joho/godotenv"
 	"github.com/gin-gonic/gin"
 
 	"github.com/Kaua-Matheus/fitstore/backend/model"
@@ -13,6 +15,7 @@ import (
 
 func Run() {
 
+	// IP
 	ip, err := utils.GetLocalIP();
 
 	router := gin.Default()
@@ -27,9 +30,9 @@ func Run() {
 		AllowCredentials: true,
 	}))
 
-	db, err := model.NewConnection()
+	db, err := model.NewConnection();
 	if err != nil {
-		fmt.Println(err)
+		fmt.Printf("Error database connection %s\n", err)
 		return
 	} else {
 		fmt.Println("Conectado.")
@@ -41,10 +44,18 @@ func Run() {
 	handler.SetupFileRoutes(router);
 	handler.User(router, db);
 
-	if err == nil {
+	// Setup
+	err = godotenv.Load(); if err != nil {
+		fmt.Printf("Error setup %s\n", err)
+		return // Adicionar retorno de erro
+	}
+	setup := os.Getenv("SETUP")
+
+	if setup == "prod" {
 		fmt.Printf("[\033[32m Info \033[0m] - Server running in \033[32m %s:8080 \033[0m\n", ip)
 		router.Run(ip + ":8080")
 	} else {
-		fmt.Printf("[\033[31m Error \033[0m] - Couldn't run the server\n")
+		fmt.Printf("[\033[31m Info \033[0m] - Server running in \033[32m localhost \033[0m\n")
+		router.Run(":8080")
 	}
 }

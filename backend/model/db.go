@@ -17,15 +17,17 @@ func NewConnection() (*gorm.DB, error) {
 		return nil, fmt.Errorf("error loading env: %s", err);
 	}
 
-	dsn := fmt.Sprintf(
-		"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
-        os.Getenv("DB_HOST"),
-        os.Getenv("DB_USER"),
-        os.Getenv("DB_PASSWORD"),
-        os.Getenv("DB_NAME"),
-        os.Getenv("DB_PORT"),
-        os.Getenv("DB_SSLMODE"),
-	);
+	// dsn := fmt.Sprintf(
+	// 	"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
+    //     os.Getenv("DB_HOST"),
+    //     os.Getenv("DB_USER"),
+    //     os.Getenv("DB_PASSWORD"),
+    //     os.Getenv("DB_NAME"),
+    //     os.Getenv("DB_PORT"),
+    //     os.Getenv("DB_SSLMODE"),
+	// );
+
+	dsn := os.Getenv("DATABASE_URL")
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{}); if err != nil {
 		return nil, fmt.Errorf("error opening connection: %s", err);
