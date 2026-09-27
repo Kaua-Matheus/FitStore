@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/Kaua-Matheus/fitstore/backend/controller/utils"
+	"github.com/Kaua-Matheus/fitstore/backend/config/utils"
 
 	"github.com/gin-gonic/gin"
 )

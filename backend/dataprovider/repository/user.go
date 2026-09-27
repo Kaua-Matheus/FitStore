@@ -1,4 +1,4 @@
-package handler
+package repository
 
 import (
 	"fmt"
@@ -6,31 +6,31 @@ import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 
-	"github.com/Kaua-Matheus/fitstore/backend/model/entitie"
+	"github.com/Kaua-Matheus/fitstore/backend/core/domain"
 )
 
 // User
-func GetUserById(db *gorm.DB, id uuid.UUID) (entitie.User, error) {
+func GetUserById(db *gorm.DB, id uuid.UUID) (models.User, error) {
 	
-	user := entitie.User{}
+	user := models.User{}
 	result := db.Where("id_user = ?", id).Find(&user); if result.Error != nil {
-		return entitie.User{}, fmt.Errorf("error trying to get the user");
+		return models.User{}, fmt.Errorf("error trying to get the user");
 	} else {
 		return user, nil;
 	}
 }
 
-func GetUserByLogin(db *gorm.DB, user_login string) (entitie.User, error) {
+func GetUserByLogin(db *gorm.DB, user_login string) (models.User, error) {
 	
-	user := entitie.User{}
+	user := models.User{}
 	result := db.Where("user_login = ?", user_login).Find(&user); if result.Error != nil {
-		return entitie.User{}, fmt.Errorf("error trying to get the user");
+		return models.User{}, fmt.Errorf("error trying to get the user");
 	} else {
 		return user, nil;
 	}
 }
 
-func AddUser(db *gorm.DB, user entitie.User) (error) {
+func AddUser(db *gorm.DB, user models.User) (error) {
 
 	result := db.Create(&user); if result.Error != nil {
 		return fmt.Errorf("error trying to add the user %s", result.Error);

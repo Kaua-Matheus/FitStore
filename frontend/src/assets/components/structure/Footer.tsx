@@ -31,7 +31,7 @@ export default function Footer() {
             </div>
 
             <div className="font-outfit">
-                <p>Tecnologia <span className="font-bold underline decoration-custom-primary">Kaua Matheus</span></p>
+                <p>Tecnologia <span className="font-bold underline decoration-custom-primary cursor-pointer">Kaua Matheus</span></p>
             </div>
         </footer>
     )

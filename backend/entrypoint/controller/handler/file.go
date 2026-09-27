@@ -8,7 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/Kaua-Matheus/fitstore/backend/controller/utils"
+	"github.com/Kaua-Matheus/fitstore/backend/config/utils"
 )
 
 func SetupFileRoutes(router *gin.Engine) {

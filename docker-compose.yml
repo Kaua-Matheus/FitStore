@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  # Serviço do PostgreSQL
+  postgres:
+    image: postgres:15-alpine
+    container_name: fitstore-postgres
+    environment:
+      POSTGRES_DB: fitstore
+      POSTGRES_USER: fitstore_user
+      POSTGRES_PASSWORD: fitstore_password
+    volumes:
+      # Volume para persistir os dados do banco
+      - postgres_data:/var/lib/postgresql/data
+      # Opcional: script de inicialização
+      # - ./init-db:/docker-entrypoint-initdb.d
+    ports:
+      - "5433:5433"
+    networks:
+      - fitstore-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fitstore_user -d fitstore"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Serviço da aplicação Go
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: fitstore-backend
+    env_file:
+      - ./backend/.env
+    environment:
+      # Override específicas para Docker (o .env será carregado automaticamente)
+      DB_HOST: postgres
+      DB_SSLMODE: disable
+    ports:
+      - "80:80"
+    depends_on: 
+      postgres:
+        condition: service_healthy
+    networks:
+      - fitstore-network
+    volumes:
+      # Volume para uploads (se necessário)
+      - ./uploads:/root/uploads
+    restart: unless-stopped
+
+  # Opcional: Serviço do frontend (se quiser incluir no Docker)
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   container_name: fitstore-frontend
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - backend
+  #   networks:
+  #     - fitstore-network
+
+# Redes isoladas para comunicação entre containers
+networks:
+  fitstore-network:
+    driver: bridge
+
+# Volumes para persistência de dados
+volumes:
+  postgres_data:
+    driver: local

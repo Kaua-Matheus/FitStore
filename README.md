@@ -1,13 +1,22 @@
-# Como configurar
-Para inicializar a aplicação deve-se rodar o backend e o frontend, passando um .env para o backend no formato padronizado como visto em .env.exemple.
+# Fitstore
+Personal project for practice, the goal is create a full hand-made application for gym owners.
 
-## Rodar backend
-De dentro da pasta backend, execute:
+# How configure?
+To start the application, the backend and frontend must run, create .env for the backend in the default form as is in .env.exemple.
+
+## Run backend
+Inside backend path:
+```bash
 go run cmd/main.go
+```
 
-## Rodar frontend
-De dentro da pasta frontend, execute para local:
+## Run frontend
+Inside frontend path, execute:
+```bash
 npm run start:dev
+```
 
-Para produção (utilizando IP):
+For production (Using IP):
+```bash
 npm run start:prod
+```
