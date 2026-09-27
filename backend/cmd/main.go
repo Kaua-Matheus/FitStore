@@ -3,10 +3,10 @@ package main
 import (
 	_"fmt"
 
-	_"github.com/Kaua-Matheus/fitstore/backend/model"
-	"github.com/Kaua-Matheus/fitstore/backend/controller"
+	_"github.com/Kaua-Matheus/fitstore/backend/core/dataprovider"
+	"github.com/Kaua-Matheus/fitstore/backend/entrypoint/controller"
 
-	_"github.com/Kaua-Matheus/fitstore/backend/controller/utils"
+	_"github.com/Kaua-Matheus/fitstore/backend/config/utils"
 	//"github.com/gin-contrib/cors"
 )
 

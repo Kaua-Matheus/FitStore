@@ -8,9 +8,9 @@ import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 
-	"github.com/Kaua-Matheus/fitstore/backend/model/entitie"
-	"github.com/Kaua-Matheus/fitstore/backend/model/handler"
-	"github.com/Kaua-Matheus/fitstore/backend/controller/utils"
+	"github.com/Kaua-Matheus/fitstore/backend/core/domain"
+	"github.com/Kaua-Matheus/fitstore/backend/dataprovider/repository"
+	"github.com/Kaua-Matheus/fitstore/backend/config/utils"
 )
 
 func Product(router *gin.Engine, db *gorm.DB) {
@@ -22,7 +22,7 @@ func Product(router *gin.Engine, db *gorm.DB) {
 	// GET
 	router.GET("/product", func(ctx *gin.Context) {
 
-		products, err := handler.GetAllProduct(db)
+		products, err := repository.GetAllProduct(db)
 		if err != nil {
 			fmt.Printf("An error occours trying to get the data: %s\n", err)
 		}
@@ -30,7 +30,7 @@ func Product(router *gin.Engine, db *gorm.DB) {
 		var resultList []map[string]any
 
 		for _, product := range products {
-			image, err := handler.GetImage(db, product.IdImage)
+			image, err := repository.GetImage(db, product.IdImage)
 			if err != nil {
 				fmt.Printf("An error occours trying to get the image: %s\n", err)
 				return
@@ -51,13 +51,13 @@ func Product(router *gin.Engine, db *gorm.DB) {
 
 		id := ctx.Param("id")
 
-		product, err := handler.GetProduct(db, uuid.MustParse(id))
+		product, err := repository.GetProduct(db, uuid.MustParse(id))
 		if err != nil {
 			fmt.Printf("An error occours trying to get the data: %s\n", err)
 			return
 		}
 
-		image, err := handler.GetImage(db, product.IdImage)
+		image, err := repository.GetImage(db, product.IdImage)
 		if err != nil {
 			fmt.Printf("An error occours trying to get the image: %s\n", err)
 			return
@@ -75,7 +75,7 @@ func Product(router *gin.Engine, db *gorm.DB) {
 	// POST
 	router.POST("/product", func(ctx *gin.Context) {
 
-		product := entitie.Product{}
+		product := models.Product{}
 
 		if err := ctx.BindJSON(&product); err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{
@@ -83,7 +83,7 @@ func Product(router *gin.Engine, db *gorm.DB) {
 			})
 		}
 
-		handler.AddProduct(db, product)
+		repository.AddProduct(db, product)
 
 		ctx.JSON(http.StatusOK, gin.H{
 			"message": "Produto adicionado com sucesso",
@@ -93,7 +93,7 @@ func Product(router *gin.Engine, db *gorm.DB) {
 	// PUT
 	router.PUT("/product/:id", func(ctx *gin.Context) {
 
-		product := entitie.Product{}
+		product := models.Product{}
 
 		str_id := ctx.Param("id")
 
@@ -103,7 +103,7 @@ func Product(router *gin.Engine, db *gorm.DB) {
 			})
 		}
 
-		handler.UpdateProduct(db, uuid.MustParse(str_id), product)
+		repository.UpdateProduct(db, uuid.MustParse(str_id), product)
 
 		ctx.JSON(http.StatusOK, gin.H{
 			"message": "Produto adicionado com sucesso",

@@ -1,4 +1,4 @@
-package entitie
+package models
 
 import (
 	"time"
@@ -19,8 +19,8 @@ func (User) TableName() string {
 	return "user"
 }
 
-type UserReq struct { // Struct somente utilizado para requisições json
+type UserReq struct {
 	UserName     string `json:"user_name" gorm:"not null"`
 	UserLogin    string `json:"login" gorm:"not null"`
-	UserPassword string `json:"password" gorm:"not null"` // Adicionar criptografia na troca
+	UserPassword string `json:"password" gorm:"not null"`
 }

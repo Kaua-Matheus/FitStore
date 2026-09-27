@@ -1,4 +1,4 @@
-package handler
+package repository
 
 import (
 	"fmt"
@@ -6,21 +6,21 @@ import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 
-	"github.com/Kaua-Matheus/fitstore/backend/model/entitie"
+	"github.com/Kaua-Matheus/fitstore/backend/core/domain"
 )
 
 // Product
-func GetAllProduct(db *gorm.DB) ([]entitie.Product, error) {
+func GetAllProduct(db *gorm.DB) ([]models.Product, error) {
 
-	var alldata []entitie.Product;
+	var alldata []models.Product;
 	result := db.Find(&alldata);
 	return alldata, result.Error;
 
 }
 
-func GetProduct(db *gorm.DB, id uuid.UUID) (entitie.Product, error) {
+func GetProduct(db *gorm.DB, id uuid.UUID) (models.Product, error) {
 
-	product := entitie.Product{};
+	product := models.Product{};
 	result := db.Where("id = ?", id).Find(&product);
 	if result.Error != nil {
 		return product, fmt.Errorf("%s", result.Error);
@@ -30,7 +30,7 @@ func GetProduct(db *gorm.DB, id uuid.UUID) (entitie.Product, error) {
 
 }
 
-func AddProduct(db *gorm.DB, product entitie.Product) (error) {
+func AddProduct(db *gorm.DB, product models.Product) (error) {
 	
 	result := db.Create(&product); if result.Error != nil {
 		return fmt.Errorf("error trying to add the register: %w", result.Error);
@@ -40,9 +40,9 @@ func AddProduct(db *gorm.DB, product entitie.Product) (error) {
 
 }
 
-func UpdateProduct(db *gorm.DB, id uuid.UUID, product entitie.Product) (error) {
+func UpdateProduct(db *gorm.DB, id uuid.UUID, product models.Product) (error) {
 
-	result := db.Model(&entitie.Product{}).Where("id = ?", id).Updates(product);
+	result := db.Model(&models.Product{}).Where("id = ?", id).Updates(product);
 	if result.Error != nil {
 		return fmt.Errorf("error trying to update the data: %s", result.Error);
 	}

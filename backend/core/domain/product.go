@@ -1,4 +1,4 @@
-package entitie
+package models
 
 import (
 	"time"

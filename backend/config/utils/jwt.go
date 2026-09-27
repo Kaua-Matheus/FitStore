@@ -3,25 +3,26 @@ package utils
 import (
 	"fmt"
 	"time"
-	"os"
+	_"os"
 
-	"github.com/joho/godotenv"
+	_"github.com/joho/godotenv"
 	"github.com/golang-jwt/jwt/v5"
 )
 
-func getEnv() (string) {
-	err := godotenv.Load(); if err != nil {
-		panic("Couldn't load environment")
-	} else {
-		key := os.Getenv("JWT_SECRET")
-		if key == "" {
-			panic("JWT_SECRET environment variable is required")
-		}
-		return key;
-	}
-}
+// func getEnv() (string) {
+// 	err := godotenv.Load(); if err != nil {
+// 		panic("Couldn't load environment")
+// 	} else {
+// 		key := os.Getenv("JWT_SECRET")
+// 		if key == "" {
+// 			panic("JWT_SECRET environment variable is required")
+// 		}
+// 		return key;
+// 	}
+// }
 
-var secretKey = []byte(getEnv())
+// var secretKey = []byte(getEnv())
+var secretKey = []byte("123e4567-e89b-12d3-a456-426614174000")
 
 func CreateToken(user_login string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
