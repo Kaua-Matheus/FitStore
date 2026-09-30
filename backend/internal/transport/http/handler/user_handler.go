@@ -1,11 +1,10 @@
 package handler
 
 import (
-	_ "fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	_ "github.com/google/uuid"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 
 	domain "github.com/Kaua-Matheus/fitstore/backend/internal/domain"
@@ -47,7 +46,7 @@ func User(router *gin.Engine, db *gorm.DB) {
 					return
 				}
 
-				var password, err = crypt.HashPassword(userReq.UserPassword)
+				var hashed_password, err = crypt.HashPassword(userReq.UserPassword)
 				if err != nil {
 					ctx.JSON(http.StatusBadRequest, gin.H{
 						"message": "error trying to hash the password",
@@ -55,10 +54,14 @@ func User(router *gin.Engine, db *gorm.DB) {
 					return
 				}
 
+				// User uuid added manually
+				user_uuid, err := uuid.NewUUID()
+
 				var user = domain.User{
+					ID:               user_uuid,
 					UserName:         userReq.UserName,
 					UserLogin:        userReq.UserLogin,
-					UserPasswordHash: password,
+					UserPasswordHash: hashed_password,
 				}
 
 				if token, err := jwt.CreateToken(user.UserLogin); err != nil {

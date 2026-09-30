@@ -32,10 +32,14 @@ func GetUserByLogin(db *gorm.DB, user_login string) (domain.User, error) {
 	}
 }
 
+// Fix dto implementation
 func AddUser(db *gorm.DB, user domain.User) error {
+
+	fmt.Println(user)
 
 	result := db.Create(&user)
 	if result.Error != nil {
+		fmt.Println("Deu erro")
 		return fmt.Errorf("error trying to add the user %s", result.Error)
 	} else {
 		return nil

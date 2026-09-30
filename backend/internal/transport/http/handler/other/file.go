@@ -39,7 +39,7 @@ func SetupFileRoutes(router *gin.Engine) {
 			if !file.IsDir() {
 				fileInfo := map[string]string{
 					"filename": file.Name(),
-					"url":      fmt.Sprintf("http://%s:8080/files/%s/%s", ip, dir, file.Name()),
+					"url":      fmt.Sprintf("http://%s:80/files/%s/%s", ip, dir, file.Name()),
 				}
 				fileList = append(fileList, fileInfo)
 			}

@@ -7,7 +7,6 @@ import (
 	"gorm.io/gorm"
 
 	config "github.com/Kaua-Matheus/fitstore/backend/internal/config"
-	domain "github.com/Kaua-Matheus/fitstore/backend/internal/domain"
 	repository "github.com/Kaua-Matheus/fitstore/backend/internal/repository"
 )
 
@@ -26,8 +25,8 @@ func NewConnection() (*gorm.DB, error) {
 
 	// Execute entities migrations
 	err = db.AutoMigrate(
-		&domain.Product{},
-		&domain.User{},
+		&repository.Product{},
+		&repository.User{},
 
 		&repository.Image{}, // Remove future
 	)

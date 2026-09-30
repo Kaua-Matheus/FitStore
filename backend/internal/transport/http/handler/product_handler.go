@@ -38,7 +38,7 @@ func Product(router *gin.Engine, db *gorm.DB) {
 			} else {
 				resultList = append(resultList, map[string]any{
 					"product":   product,
-					"url_image": fmt.Sprintf("http://%s:8080/files/%s/%s%s", ip, image.FilePath, image.FileName, image.ContentType),
+					"url_image": fmt.Sprintf("http://%s:80/files/%s/%s%s", ip, image.FilePath, image.FileName, image.ContentType),
 				})
 			}
 		}
@@ -68,7 +68,7 @@ func Product(router *gin.Engine, db *gorm.DB) {
 			"data": product,
 			"image": gin.H{
 				"file_name": image.FileName + image.ContentType,
-				"url":       fmt.Sprintf("http://%s:8080/files/%s/%s%s", ip, image.FilePath, image.FileName, image.ContentType),
+				"url":       fmt.Sprintf("http://%s:80/files/%s/%s%s", ip, image.FilePath, image.FileName, image.ContentType),
 			},
 		})
 	})

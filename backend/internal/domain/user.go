@@ -7,11 +7,11 @@ import (
 )
 
 type User struct {
-	IdUser           uuid.UUID
+	ID               uuid.UUID
 	UserName         string
 	UserLogin        string
 	UserPasswordHash string
-	IdImage          string
+	IdImage          uuid.UUID
 	CreatedAt        time.Time
 	LastUpdate       time.Time
 }
