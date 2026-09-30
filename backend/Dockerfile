@@ -25,7 +25,7 @@ WORKDIR /root/
 COPY --from=builder /app/app .
 
 # Criar diretório para uploads
-RUN mkdir -p uploads/Banners uploads/Perfil uploads/Produtos
+RUN mkdir -p uploads/banners uploads/Perfil uploads/Produtos
 
 # Expor a porta
 EXPOSE 80
