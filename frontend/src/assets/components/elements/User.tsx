@@ -101,7 +101,6 @@ export default function User() {
             setOpened(false);
             addToast("Registro executado com sucesso, bem-vindo!", "success");
             checkAuth();
-            console.log(isLoggedIn)
         } catch (err) {
             console.log(`Error: ${err}`)
         }

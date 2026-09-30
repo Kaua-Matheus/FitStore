@@ -2,33 +2,34 @@ package utils
 
 import (
 	"fmt"
+	"os"
 	"time"
-	_"os"
 
-	_"github.com/joho/godotenv"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/joho/godotenv"
 )
 
-// func getEnv() (string) {
-// 	err := godotenv.Load(); if err != nil {
-// 		panic("Couldn't load environment")
-// 	} else {
-// 		key := os.Getenv("JWT_SECRET")
-// 		if key == "" {
-// 			panic("JWT_SECRET environment variable is required")
-// 		}
-// 		return key;
-// 	}
-// }
-
-// var secretKey = []byte(getEnv())
-var secretKey = []byte("123e4567-e89b-12d3-a456-426614174000")
+func getEnv() string {
+	err := godotenv.Load()
+	if err != nil {
+		panic("Couldn't load environment")
+	} else {
+		key := os.Getenv("JWT_SECRET")
+		if key == "" {
+			panic("JWT_SECRET environment variable is required")
+		}
+		return key
+	}
+}
 
 func CreateToken(user_login string) (string, error) {
+
+	var secretKey = []byte(getEnv())
+
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
 		jwt.MapClaims{
 			"user_login": user_login,
-			"exp":      time.Now().Add(time.Hour * 24).Unix(), // Pode ser alterado para diminuir ou aumentar o tempo do token
+			"exp":        time.Now().Add(time.Minute * 15).Unix(), // Timestamp to expire the jwt
 		},
 	)
 
@@ -41,6 +42,9 @@ func CreateToken(user_login string) (string, error) {
 }
 
 func VerifyToken(tokenString string) error {
+
+	var secretKey = []byte(getEnv())
+
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
@@ -60,6 +64,9 @@ func VerifyToken(tokenString string) error {
 }
 
 func GetUserLoginFromToken(tokenString string) (string, error) {
+
+	var secretKey = []byte(getEnv())
+
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
