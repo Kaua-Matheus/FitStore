@@ -19,7 +19,8 @@ func SetupFileRoutes(router *gin.Engine) {
 	}
 
 	// GET
-	// Adquire todas as imagens de dentro da pasta
+	// Get all images inside a path
+	// Fix it to store in database
 	router.GET("/:dir", func(ctx *gin.Context) {
 		dir := ctx.Param("dir")
 

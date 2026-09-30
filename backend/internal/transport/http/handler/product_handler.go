@@ -10,6 +10,7 @@ import (
 
 	config "github.com/Kaua-Matheus/fitstore/backend/internal/config"
 	domain "github.com/Kaua-Matheus/fitstore/backend/internal/domain"
+	"github.com/Kaua-Matheus/fitstore/backend/internal/transport/http/dto/request"
 	usecase "github.com/Kaua-Matheus/fitstore/backend/internal/usecase"
 )
 
@@ -76,12 +77,23 @@ func Product(router *gin.Engine, db *gorm.DB) {
 	// POST
 	router.POST("/product", func(ctx *gin.Context) {
 
-		product := domain.Product{}
-
-		if err := ctx.BindJSON(&product); err != nil {
+		productReq := request.CreateProductRequest{}
+		if err := ctx.BindJSON(&productReq); err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{
 				"message": "error trying to add data",
 			})
+		}
+
+		// User uuid added manually
+		// Handle err!
+		product_id, _ := uuid.NewUUID()
+
+		product := domain.Product{
+			ID:                 product_id,
+			ProductName:        productReq.ProductName,
+			ProductDescription: productReq.ProductDescription,
+			ProductPrice:       productReq.ProductPrice,
+			IdImage:            productReq.IdImage,
 		}
 
 		usecase.AddProduct(db, product)

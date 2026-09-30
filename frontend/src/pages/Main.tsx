@@ -34,7 +34,7 @@ export default function Main() {
 
       try {
         // Response Product
-        const response_product = await fetch(`http://${GetLocalIp()}:8080/product`);
+        const response_product = await fetch(`http://${GetLocalIp()}:80/product`);
         const data_product = await response_product.json();
 
         setProducts(data_product.data);
