@@ -24,6 +24,7 @@ func Run() {
 	router.Use(cors.New(cors.Config{
 		AllowOrigins: []string{
 			"http://localhost:5173",
+			"http://localhost:80",
 			fmt.Sprintf("http://%s:5173", ip),
 		},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},

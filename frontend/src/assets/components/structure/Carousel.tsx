@@ -22,7 +22,7 @@ export default function Carousel() {
         const fetchAll = async () => {
 
             try {
-            const response = await fetch(`http://${GetLocalIp()}:8080/Banners`);
+            const response = await fetch(`http://${GetLocalIp()}:80/banners`);
             const data_image = await response.json();
 
 

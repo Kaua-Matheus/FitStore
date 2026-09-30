@@ -24,10 +24,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const checkAuth = async () => {
         try {
-            const response = await fetch(`http://${GetLocalIp()}:8080/user/auth`, {
+
+            const response = await fetch(`http://${GetLocalIp()}:80/user/auth`, {
                 method: "GET",
                 credentials: "include",
             });
+            
             const data = await response.json();
 
             if (data.authenticated) {

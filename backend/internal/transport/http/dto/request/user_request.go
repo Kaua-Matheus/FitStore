@@ -7,7 +7,7 @@ import (
 )
 
 type RegisterRequest struct {
-	IdUser       uuid.UUID `gorm:"primaryKey"`
+	ID           uuid.UUID `gorm:"primaryKey"`
 	UserName     string    `json:"user_name" gorm:"not null"`
 	UserLogin    string    `json:"login" gorm:"not null"`
 	UserPassword string    `json:"password" gorm:"not null"`
